@@ -2,10 +2,11 @@
   "name": "40-Day Detox Protocol",
   "short_name": "Detox 40",
   "description": "Track your Healer Labs 40-day detox protocol day by day.",
-  "start_url": "/",
+  "start_url": "/detox-tracker/",
+  "scope": "/detox-tracker/",
   "display": "standalone",
-  "background_color": "#1a2e1e",
-  "theme_color": "#1a2e1e",
+  "background_color": "#04342C",
+  "theme_color": "#04342C",
   "orientation": "portrait",
   "icons": [
     {
