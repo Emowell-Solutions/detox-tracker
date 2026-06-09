@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#04342C" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="40-Day Detox" />
+  <title>40-Day Detox Protocol</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --deep:   #04342C;
+      --dark:   #085041;
+      --teal:   #5DCAA5;
+      --mint:   #9FE1CB;
+      --pale:   #E1F5EE;
+      --cream:  #F0FDFB;
+      --gold:   #FAC775;
+      --text:   #04342C;
+      --radius: 16px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── SETUP ── */
+    #setup-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100dvh;
+      padding: 40px 24px;
+      background: var(--deep);
+      color: var(--cream);
+    }
+    #setup-screen .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 48px;
+    }
+    #setup-screen h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 8vw, 56px);
+      font-weight: 300;
+      line-height: 1.1;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    #setup-screen h1 em { font-style: italic; color: var(--gold); }
+    #setup-screen p {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--mint);
+      text-align: center;
+      max-width: 300px;
+      line-height: 1.7;
+      margin-bottom: 56px;
+    }
+    .setup-field { width: 100%; max-width: 320px; margin-bottom: 16px; }
+    .setup-field label {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+    .setup-field input {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: var(--radius);
+      color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .setup-field input:focus { border-color: var(--teal); }
+    .btn-start {
+      margin-top: 24px;
+      width: 100%;
+      max-width: 320px;
+      padding: 16px;
+      background: var(--teal);
+      color: var(--deep);
+      border: none;
+      border-radius: var(--radius);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-start:active { transform: scale(0.98); }
+    .btn-start:hover { background: var(--mint); }
+
+    /* ── APP ── */
+    #app { display: none; flex-direction: column; min-height: 100dvh; }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--deep);
+      color: var(--cream);
+      padding: 20px 24px 24px;
+      padding-top: max(20px, env(safe-area-inset-top));
+    }
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+    .brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+    .reset-btn {
+      background: none;
+      border: none;
+      color: var(--mint);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      opacity: 0.5;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .reset-btn:hover { opacity: 1; }
+    .today-badge {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--deep);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 6px;
+    }
+    .header-day {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(52px, 14vw, 80px);
+      font-weight: 300;
+      line-height: 0.9;
+      letter-spacing: -0.02em;
+    }
+    .header-phase {
+      margin-top: 10px;
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--mint);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .phase-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255,255,255,0.1);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+    }
+    .progress-bar-wrap {
+      margin-top: 16px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      height: 3px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--teal);
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+    .progress-label {
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--mint);
+      opacity: 0.6;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* ── PHASE TIMELINE ── */
+    .phase-timeline {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .phase-track {
+      display: flex;
+      align-items: stretch;
+      height: 28px;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+    .phase-segment {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      overflow: hidden;
+      position: relative;
+      transition: opacity 0.2s;
+    }
+    .phase-segment.active { opacity: 1; }
+    .phase-segment.inactive { opacity: 0.35; }
+    .phase-segment.seg-heavy { background: rgba(93,202,165,0.3); color: var(--mint); }
+    .phase-segment.seg-parasite { background: rgba(250,199,117,0.25); color: var(--gold); }
+    .phase-segment.seg-rest { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.4); }
+    .phase-row-labels {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .phase-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10px;
+      color: rgba(255,255,255,0.5);
+    }
+    .phase-legend-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .day-tick-row {
+      display: flex;
+      position: relative;
+      height: 14px;
+      margin-bottom: 4px;
+    }
+    .day-tick-label {
+      position: absolute;
+      font-size: 9px;
+      color: rgba(255,255,255,0.35);
+      transform: translateX(-50%);
+      white-space: nowrap;
+    }
+
+    /* ── QUOTE ── */
+    .quote-block {
+      background: var(--dark);
+      padding: 20px 24px;
+      color: var(--mint);
+    }
+    .quote-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 17px;
+      line-height: 1.6;
+      color: var(--cream);
+    }
+    .quote-author {
+      margin-top: 8px;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+
+    /* ── MAIN ── */
+    main { flex: 1; padding: 24px; max-width: 600px; width: 100%; margin: 0 auto; }
+
+    /* ── TODAY CARD ── */
+    .today-card {
+      background: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 2px 20px rgba(4,52,44,0.08);
+      margin-bottom: 24px;
+    }
+    .today-card-header {
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .today-card-header h2 {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #888;
+    }
+    .task-list { padding: 8px 0; }
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 20px;
+      border-bottom: 1px solid #f8f8f8;
+    }
+    .task-item:last-child { border-bottom: none; }
+    .task-info { flex: 1; }
+    .task-name { font-size: 15px; font-weight: 400; color: var(--text); margin-bottom: 2px; }
+    .task-detail { font-size: 12px; color: #999; font-weight: 300; }
+    .task-emoji { font-size: 18px; flex-shrink: 0; }
+
+    /* ── NOTES ── */
+    .notes-section {
+      background: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 2px 20px rgba(4,52,44,0.06);
+      margin-bottom: 24px;
+    }
+    .notes-header {
+      padding: 16px 20px 12px;
+      border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .notes-header h2 {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #888;
+      flex: 1;
+    }
+    .notes-icon { font-size: 16px; }
+    .notes-body { padding: 16px 20px; }
+    .notes-textarea {
+      width: 100%;
+      min-height: 100px;
+      border: 1px solid #e8f5f2;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text);
+      resize: vertical;
+      outline: none;
+      background: var(--cream);
+      transition: border-color 0.2s;
+      line-height: 1.6;
+    }
+    .notes-textarea:focus { border-color: var(--teal); }
+    .notes-textarea::placeholder { color: #b0cec9; }
+    .notes-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .notes-saved {
+      font-size: 12px;
+      color: var(--teal);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .notes-saved.visible { opacity: 1; }
+    .notes-save-btn {
+      padding: 8px 18px;
+      background: var(--teal);
+      color: var(--deep);
+      border: none;
+      border-radius: 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .notes-save-btn:active { transform: scale(0.97); }
+    .notes-save-btn:hover { background: var(--mint); }
+    .notes-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .notes-chip {
+      padding: 5px 12px;
+      background: var(--pale);
+      color: var(--dark);
+      border: none;
+      border-radius: 20px;
+      font-size: 12px;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .notes-chip:hover { background: var(--mint); }
+
+    /* ── COMPLETE BTN ── */
+    .complete-day-btn {
+      width: 100%;
+      padding: 18px;
+      background: var(--deep);
+      color: var(--cream);
+      border: none;
+      border-radius: var(--radius);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-bottom: 24px;
+      transition: background 0.2s, transform 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .complete-day-btn:active { transform: scale(0.98); }
+    .complete-day-btn:hover { background: var(--dark); }
+    .complete-day-btn.completed { background: var(--teal); color: var(--deep); }
+    .complete-day-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ── CALENDAR ── */
+    .calendar-section { margin-bottom: 40px; }
+    .calendar-section h3 {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: 14px;
+    }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 6px;
+    }
+    .cal-day {
+      aspect-ratio: 1;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 400;
+      background: white;
+      color: #ccc;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s;
+      -webkit-tap-highlight-color: transparent;
+      position: relative;
+    }
+    .cal-day.done { background: var(--teal); color: white; }
+    .cal-day.has-note::after {
+      content: '';
+      position: absolute;
+      bottom: 3px;
+      right: 3px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+    .cal-day.today { border-color: var(--deep); color: var(--deep); font-weight: 500; }
+    .cal-day.today.done { border-color: var(--teal); }
+    .cal-day.rest { background: #f0fdfb; color: #b0cec9; }
+    .cal-day.future { color: #ddd; }
+
+    /* ── NAV ── */
+    .nav-days { display: flex; gap: 10px; margin-bottom: 24px; }
+    .nav-btn {
+      padding: 10px 20px;
+      background: white;
+      border: 1.5px solid #e0f0ed;
+      border-radius: 40px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+      color: var(--text);
+      transition: all 0.15s;
+    }
+    .nav-btn:hover { border-color: var(--teal); }
+    .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    /* ── REST DAY ── */
+    .rest-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      text-align: center;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 20px rgba(4,52,44,0.06);
+    }
+    .rest-card .rest-icon { font-size: 40px; margin-bottom: 12px; }
+    .rest-card h2 { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; margin-bottom: 8px; }
+    .rest-card p { font-size: 13px; color: #888; line-height: 1.6; }
+
+    /* ── COMPLETED BANNER ── */
+    .day-completed-banner {
+      background: linear-gradient(135deg, var(--teal), var(--dark));
+      color: white;
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .day-completed-banner .check-big {
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .day-completed-banner strong { display: block; font-size: 15px; font-weight: 500; }
+    .day-completed-banner span { font-size: 13px; opacity: 0.8; }
+
+    /* ── LEGEND ── */
+    .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #888; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+    /* ── STEPS GUIDE ── */
+    .steps-guide { margin-top: 32px; margin-bottom: 40px; }
+    .steps-guide h3 {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: 14px;
+    }
+    .step-card {
+      background: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(4,52,44,0.06);
+      margin-bottom: 12px;
+    }
+    .step-card-rest { opacity: 0.85; }
+    .step-card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      border-bottom: 1px solid #f0f0f0;
+      background: var(--cream);
+    }
+    .step-emoji { font-size: 22px; flex-shrink: 0; }
+    .step-title { font-size: 14px; font-weight: 500; color: var(--deep); }
+    .step-days {
+      font-size: 11px;
+      color: var(--teal);
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      margin-top: 2px;
+    }
+    .step-body { padding: 4px 0; }
+    .step-row {
+      display: flex;
+      gap: 12px;
+      padding: 12px 20px;
+      align-items: flex-start;
+    }
+    .step-row-block { flex-direction: column; gap: 8px; }
+    .step-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #aaa;
+      min-width: 90px;
+      flex-shrink: 0;
+      padding-top: 1px;
+    }
+    .step-row-block .step-label { min-width: unset; }
+    .step-val { font-size: 13px; color: #444; line-height: 1.6; flex: 1; }
+    .step-divider { height: 1px; background: #f5f5f5; margin: 0 20px; }
+    .step-schedule { display: flex; flex-direction: column; gap: 4px; width: 100%; }
+    .schedule-row {
+      display: flex;
+      gap: 10px;
+      align-items: baseline;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: var(--cream);
+    }
+    .schedule-row.srest { background: #f5f5f5; }
+    .sday {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--teal);
+      min-width: 36px;
+      flex-shrink: 0;
+    }
+    .schedule-row.srest .sday { color: #aaa; }
+    .sdetail { font-size: 12px; color: #555; line-height: 1.5; }
+    .colon-nights {
+      font-size: 13px;
+      color: #555;
+      background: var(--cream);
+      padding: 10px 14px;
+      border-radius: 10px;
+      line-height: 1.8;
+      letter-spacing: 0.03em;
+      width: 100%;
+    }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+<div id="setup-screen">
+  <div class="logo">Healer Labs · Protocol</div>
+  <h1>Your 40-Day<br/><em>Cleanse</em></h1>
+  <p>A four-phase system to detox, cleanse, bind and flush. Let's track every day.</p>
+  <div class="setup-field">
+    <label>Your name</label>
+    <input type="text" id="user-name" placeholder="e.g. Indira" autocomplete="off" />
+  </div>
+  <div class="setup-field">
+    <label>Protocol start date</label>
+    <input type="date" id="start-date" />
+  </div>
+  <button class="btn-start" onclick="startProtocol()">Begin the journey →</button>
+</div>
+
+<div id="app">
+  <header>
+    <div class="header-top">
+      <div class="brand">40-Day Detox</div>
+      <button class="reset-btn" onclick="confirmReset()">Reset</button>
+    </div>
+    <div class="today-badge" id="day-badge">Day 1 of 40</div>
+    <div class="header-day" id="header-day-num">1</div>
+    <div class="header-phase" id="header-phase">—</div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+    <div class="progress-label">
+      <span id="progress-text">0 days completed</span>
+      <span id="progress-pct">0%</span>
+    </div>
+
+    <!-- PHASE TIMELINE -->
+    <div class="phase-timeline" id="phase-timeline"></div>
+  </header>
+
+  <div class="quote-block">
+    <div class="quote-text" id="quote-text"></div>
+    <div class="quote-author" id="quote-author"></div>
+  </div>
+
+  <main>
+    <div class="nav-days">
+      <button class="nav-btn" id="prev-btn" onclick="navigate(-1)">← Prev</button>
+      <button class="nav-btn" id="today-btn" onclick="goToday()">Today</button>
+      <button class="nav-btn" id="next-btn" onclick="navigate(1)">Next →</button>
+    </div>
+
+    <div class="rest-card hidden" id="rest-card">
+      <div class="rest-icon">💤</div>
+      <h2>Rest Day</h2>
+      <p>No Parasite Cleanse or Toxin Binder today.<br/>Stay hydrated and let your body recover.</p>
+    </div>
+
+    <div class="today-card hidden" id="today-card">
+      <div class="today-card-header">
+        <h2 id="viewing-label">Today's tasks</h2>
+      </div>
+      <div class="task-list" id="task-list"></div>
+    </div>
+
+    <div class="day-completed-banner hidden" id="completed-banner">
+      <div class="check-big">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M3 9l4 4 8-8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div>
+        <strong>Day completed!</strong>
+        <span id="completed-banner-sub">Great work keeping up the protocol.</span>
+      </div>
+    </div>
+
+    <button class="complete-day-btn" id="complete-btn" onclick="toggleDayComplete()">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M3 9l4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span id="complete-btn-label">Mark day as done</span>
+    </button>
+
+    <!-- NOTES -->
+    <div class="notes-section" id="notes-section">
+      <div class="notes-header">
+        <span class="notes-icon">📝</span>
+        <h2 id="notes-label">How are you feeling today?</h2>
+      </div>
+      <div class="notes-body">
+        <div class="notes-chips" id="quick-chips"></div>
+        <textarea
+          class="notes-textarea"
+          id="notes-textarea"
+          placeholder="Log symptoms, energy levels, mood, sleep, anything you notice…"
+          oninput="onNotesInput()"
+        ></textarea>
+        <div class="notes-actions">
+          <span class="notes-saved" id="notes-saved">✓ Saved</span>
+          <button class="notes-save-btn" onclick="saveNote()">Save note</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="calendar-section">
+      <h3>Your journey</h3>
+      <div class="calendar-grid" id="calendar-grid"></div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--teal)"></div> Done</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--deep);border-radius:3px;border:1.5px solid var(--deep)"></div> Today</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div> Has note</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f0fdfb;border:1px solid #d0ece8"></div> Rest day</div>
+      </div>
+    </div>
+
+    <!-- STEPS GUIDE -->
+    <div class="steps-guide">
+      <h3>Protocol guide</h3>
+
+      <div class="step-card">
+        <div class="step-card-header">
+          <span class="step-emoji">🧩</span>
+          <div>
+            <div class="step-title">Step 1 — Heavy Metals Detox</div>
+            <div class="step-days">Days 1–20</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <div class="step-row"><span class="step-label">How to take</span><span class="step-val">2 capsules daily with your main meal</span></div>
+          <div class="step-divider"></div>
+          <div class="step-row"><span class="step-label">Purpose</span><span class="step-val">Prepares your liver and detox pathways so the parasite cleanse phase feels smoother and more effective.</span></div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-card-header">
+          <span class="step-emoji">🪱</span>
+          <div>
+            <div class="step-title">Step 2 — Parasite Cleanse</div>
+            <div class="step-days">Days 21–40</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <div class="step-row"><span class="step-label">How to take</span><span class="step-val">On an empty stomach, about 30 minutes before food.</span></div>
+          <div class="step-divider"></div>
+          <div class="step-row step-row-block">
+            <span class="step-label">Schedule</span>
+            <div class="step-schedule">
+              <div class="schedule-row"><span class="sday">21–22</span><span class="sdetail">1 capsule before breakfast</span></div>
+              <div class="schedule-row"><span class="sday">23–24</span><span class="sdetail">1 before breakfast + 1 before dinner</span></div>
+              <div class="schedule-row"><span class="sday">25–30</span><span class="sdetail">1 capsule before each meal (3× day)</span></div>
+              <div class="schedule-row srest"><span class="sday">31–34</span><span class="sdetail">💤 Rest — no Parasite Cleanse</span></div>
+              <div class="schedule-row"><span class="sday">35–40</span><span class="sdetail">1 capsule before each meal (3× day)</span></div>
+            </div>
+          </div>
+          <div class="step-divider"></div>
+          <div class="step-row"><span class="step-label">Tip</span><span class="step-val">If you skip a meal, just take the capsule before the meals you do eat.</span></div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-card-header">
+          <span class="step-emoji">🧲</span>
+          <div>
+            <div class="step-title">Step 3 — Toxin Binder</div>
+            <div class="step-days">Days 21–40</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <div class="step-row"><span class="step-label">How to take</span><span class="step-val">1–2 capsules daily, away from food — about 1 hour before or after meals or supplements.</span></div>
+          <div class="step-divider"></div>
+          <div class="step-row"><span class="step-label">Purpose</span><span class="step-val">Binds and flushes toxins released during the Parasite Cleanse and supports comfortable bowel movements.</span></div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-card-header">
+          <span class="step-emoji">🌙</span>
+          <div>
+            <div class="step-title">Step 4 — Colon Cleanse</div>
+            <div class="step-days">15 selected nights · Days 5–40</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <div class="step-row"><span class="step-label">How to take</span><span class="step-val">1 capsule at night, ~1 hour after your last meal. Can increase to 2–3 on those nights if needed.</span></div>
+          <div class="step-divider"></div>
+          <div class="step-row"><span class="step-label">Purpose</span><span class="step-val">Encourages waste elimination through the colon, preventing toxin build-up. Not a daily laxative — used intermittently for deep clearing.</span></div>
+          <div class="step-divider"></div>
+          <div class="step-row"><span class="step-label">What to expect</span><span class="step-val">Extra bathroom visits the next morning are normal — it means your body is releasing waste as intended. Stay hydrated and rest on flush days.</span></div>
+          <div class="step-divider"></div>
+          <div class="step-row step-row-block">
+            <span class="step-label">Nights</span>
+            <div class="colon-nights">5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 34, 36, 37, 39, 40</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card step-card-rest">
+        <div class="step-card-header">
+          <span class="step-emoji">💤</span>
+          <div>
+            <div class="step-title">Rest Days</div>
+            <div class="step-days">Days 31–34</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <div class="step-row"><span class="step-label">What to skip</span><span class="step-val">No Parasite Cleanse or Toxin Binder on these days.</span></div>
+          <div class="step-divider"></div>
+          <div class="step-row"><span class="step-label">Note</span><span class="step-val">Colon Cleanse on nights 32 and 34 still applies. Stay hydrated and allow your body to recover.</span></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const QUOTES = [
+  { text: "The body heals with play, the mind heals with laughter, and the spirit heals with joy.", author: "Proverb" },
+  { text: "Take care of your body. It's the only place you have to live.", author: "Jim Rohn" },
+  { text: "Healing is a matter of time, but it is sometimes also a matter of opportunity.", author: "Hippocrates" },
+  { text: "Let food be thy medicine and medicine be thy food.", author: "Hippocrates" },
+  { text: "The greatest wealth is health.", author: "Virgil" },
+  { text: "To keep the body in good health is a duty… otherwise we shall not be able to keep our mind strong and clear.", author: "Buddha" },
+  { text: "Every day is a new beginning. Take a deep breath, smile, and start again.", author: "Unknown" },
+  { text: "Your body is a self-healing organism. Trust the process.", author: "Unknown" },
+  { text: "Wellness is the complete integration of body, mind, and spirit.", author: "Greg Anderson" },
+  { text: "Health is not about the weight you lose, but about the life you gain.", author: "Unknown" },
+  { text: "A healthy outside starts from the inside.", author: "Robert Urich" },
+  { text: "The natural healing force within each one of us is the greatest force in getting well.", author: "Hippocrates" },
+  { text: "You have power over your mind — not outside events. Realize this, and you will find strength.", author: "Marcus Aurelius" },
+  { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
+  { text: "She believed she could, so she did.", author: "R.S. Grey" },
+  { text: "One small positive thought in the morning can change your whole day.", author: "Unknown" },
+  { text: "Do something today that your future self will thank you for.", author: "Unknown" },
+  { text: "Discipline is choosing between what you want now and what you want most.", author: "Abraham Lincoln" },
+  { text: "You are worth the quiet moment. You are worth the deeper breath.", author: "Morgan Harper Nichols" },
+  { text: "Nothing will work unless you do.", author: "Maya Angelou" },
+  { text: "With the new day comes new strength and new thoughts.", author: "Eleanor Roosevelt" },
+  { text: "Your body hears everything your mind says. Stay positive.", author: "Unknown" },
+  { text: "Commit to being healthy for life, not just for today.", author: "Unknown" },
+  { text: "It does not matter how slowly you go, as long as you do not stop.", author: "Confucius" },
+  { text: "Each day is a gift, and I will treat my body with the reverence it deserves.", author: "Unknown" },
+  { text: "Self-care is how you take your power back.", author: "Lalah Delia" },
+  { text: "You are one step closer to a lighter, freer version of yourself.", author: "Unknown" },
+  { text: "Healing takes courage. You have more than enough.", author: "Unknown" },
+  { text: "Small steps every day lead to big changes over time.", author: "Unknown" },
+  { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
+  { text: "The pain you feel today will be the strength you feel tomorrow.", author: "Unknown" },
+  { text: "Be patient with yourself. Nothing in nature blooms all year.", author: "Unknown" },
+  { text: "Your journey to health is a gift to everyone who loves you.", author: "Unknown" },
+  { text: "Even the darkest night will end and the sun will rise.", author: "Victor Hugo" },
+  { text: "Almost there. Your body is transforming — trust what you cannot yet see.", author: "Unknown" },
+  { text: "The finish line is closer than you think. Keep going.", author: "Unknown" },
+  { text: "Strength doesn't come from what you can do. It comes from overcoming what you thought you couldn't.", author: "Rikki Rogers" },
+  { text: "You've come so far. The last days are where real transformation happens.", author: "Unknown" },
+  { text: "Every ending is a new beginning. You are about to meet a healthier you.", author: "Unknown" },
+  { text: "Forty days of commitment. A lifetime of benefit. You did it.", author: "Unknown" }
+];
+
+const QUICK_CHIPS = [
+  "Feeling great 🌟", "Low energy 😴", "Headache 🤕", "Bloated 😮‍💨",
+  "Good digestion ✅", "Nausea 🤢", "Slept well 😴", "Brain fog 🌫️",
+  "Skin clearing 🌸", "More energy ⚡", "Stomach cramps 😣", "Mood boost 😊"
+];
+
+const COLON_NIGHTS = new Set([5,8,11,14,17,20,23,26,29,32,34,36,37,39,40]);
+const REST_DAYS = new Set([31,32,33,34]);
+
+function getDayProtocol(day) {
+  const tasks = [];
+  if (day >= 1 && day <= 20) {
+    tasks.push({ emoji: '🧩', name: 'Heavy Metals Detox', detail: '2 capsules with your main meal' });
+  }
+  if (day >= 21 && day <= 40 && !REST_DAYS.has(day)) {
+    let detail = '';
+    if (day <= 22) detail = '1 capsule before breakfast (empty stomach, 30 min before food)';
+    else if (day <= 24) detail = '1 capsule before breakfast + 1 before dinner';
+    else if (day <= 30) detail = '1 capsule before each meal — 3× per day';
+    else if (day >= 35) detail = '1 capsule before each meal — 3× per day';
+    tasks.push({ emoji: '🪱', name: 'Parasite Cleanse', detail });
+  }
+  if (day >= 21 && day <= 40 && !REST_DAYS.has(day)) {
+    tasks.push({ emoji: '🧲', name: 'Toxin Binder', detail: '1–2 capsules, away from food (1h before or after meals)' });
+  }
+  if (COLON_NIGHTS.has(day)) {
+    tasks.push({ emoji: '🌙', name: 'Colon Cleanse (tonight)', detail: '1 capsule at night, ~1 hour after your last meal' });
+  }
+  return { tasks, isRest: REST_DAYS.has(day) && !COLON_NIGHTS.has(day) };
+}
+
+function getPhaseLabel(day) {
+  const parts = [];
+  if (day <= 20) parts.push('<span class="phase-pill">🧩 Heavy Metals</span>');
+  if (day >= 21 && day <= 40 && !REST_DAYS.has(day)) parts.push('<span class="phase-pill">🪱 Parasite Cleanse</span>');
+  if (day >= 21 && day <= 40 && !REST_DAYS.has(day)) parts.push('<span class="phase-pill">🧲 Toxin Binder</span>');
+  if (COLON_NIGHTS.has(day)) parts.push('<span class="phase-pill">🌙 Colon Night</span>');
+  if (REST_DAYS.has(day)) parts.push('<span class="phase-pill">💤 Rest Day</span>');
+  return parts.join('');
+}
+
+let state = { userName: '', startDate: null, completedDays: {}, notes: {}, viewingDay: 1 };
+let notesTimer = null;
+
+function saveState() { localStorage.setItem('detox40_v2', JSON.stringify(state)); }
+
+function loadState() {
+  const raw = localStorage.getItem('detox40_v2') || localStorage.getItem('detox40_state');
+  if (raw) { try { const s = JSON.parse(raw); state = { notes: {}, ...s }; return !!state.startDate; } catch(e) {} }
+  return false;
+}
+
+function getTodayDay() {
+  if (!state.startDate) return 1;
+  const start = new Date(state.startDate); start.setHours(0,0,0,0);
+  const today = new Date(); today.setHours(0,0,0,0);
+  return Math.min(Math.max(Math.floor((today - start) / 86400000) + 1, 1), 40);
+}
+
+function startProtocol() {
+  const name = document.getElementById('user-name').value.trim();
+  const date = document.getElementById('start-date').value;
+  if (!name || !date) { alert('Please enter your name and start date.'); return; }
+  state.userName = name; state.startDate = date; state.completedDays = {}; state.notes = {};
+  state.viewingDay = getTodayDay();
+  saveState(); showApp();
+}
+
+function showApp() {
+  document.getElementById('setup-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  render();
+}
+
+function render() {
+  const todayDay = getTodayDay();
+  const vd = state.viewingDay;
+  const proto = getDayProtocol(vd);
+  const totalDone = Object.values(state.completedDays).filter(Boolean).length;
+  const pct = Math.round((totalDone / 40) * 100);
+
+  document.getElementById('day-badge').textContent = `Day ${vd} of 40`;
+  document.getElementById('header-day-num').textContent = vd;
+  document.getElementById('header-phase').innerHTML = getPhaseLabel(vd);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = `${totalDone} days completed`;
+  document.getElementById('progress-pct').textContent = pct + '%';
+
+  const q = QUOTES[(todayDay - 1) % QUOTES.length];
+  document.getElementById('quote-text').textContent = `"${q.text}"`;
+  document.getElementById('quote-author').textContent = `— ${q.author}`;
+
+  document.getElementById('viewing-label').textContent = vd === todayDay ? "Today's tasks" : `Day ${vd} tasks`;
+
+  document.getElementById('prev-btn').disabled = vd <= 1;
+  document.getElementById('next-btn').disabled = vd >= 40;
+  document.getElementById('today-btn').style.display = vd === todayDay ? 'none' : '';
+
+  const isDone = !!state.completedDays[vd];
+  const isFuture = vd > todayDay;
+  const pureRest = proto.isRest && proto.tasks.length === 0;
+
+  document.getElementById('rest-card').classList.toggle('hidden', !pureRest);
+  document.getElementById('today-card').classList.toggle('hidden', pureRest);
+  if (!pureRest) renderTasks(proto.tasks);
+
+  document.getElementById('completed-banner').classList.toggle('hidden', !isDone);
+  if (isDone) document.getElementById('completed-banner-sub').textContent =
+    vd === todayDay ? `Keep it up, ${state.userName}! 🌊` : 'This day is logged.';
+
+  const btn = document.getElementById('complete-btn');
+  const label = document.getElementById('complete-btn-label');
+  btn.style.display = pureRest ? 'none' : 'flex';
+  if (!pureRest) {
+    btn.classList.toggle('completed', isDone);
+    label.textContent = isDone ? 'Day marked complete ✓' : (isFuture ? `Day ${vd} — not yet` : 'Mark day as done');
+    btn.disabled = isFuture;
+  }
+
+  renderNotes(vd, todayDay);
+  renderTimeline(vd);
+  renderCalendar(todayDay);
+}
+
+function renderTasks(tasks) {
+  document.getElementById('task-list').innerHTML = tasks.map(t =>
+    `<div class="task-item">
+      <span class="task-emoji">${t.emoji}</span>
+      <div class="task-info">
+        <div class="task-name">${t.name}</div>
+        <div class="task-detail">${t.detail}</div>
+      </div>
+    </div>`
+  ).join('');
+}
+
+function renderNotes(vd, todayDay) {
+  const ta = document.getElementById('notes-textarea');
+  const label = document.getElementById('notes-label');
+  const saved = document.getElementById('notes-saved');
+  const chips = document.getElementById('quick-chips');
+  const isFuture = vd > todayDay;
+
+  label.textContent = vd === todayDay ? 'How are you feeling today?' : `Notes for day ${vd}`;
+  ta.value = state.notes[vd] || '';
+  ta.readOnly = isFuture;
+  ta.placeholder = isFuture ? 'Not yet — come back on this day.' : 'Log symptoms, energy levels, mood, sleep, anything you notice…';
+  saved.classList.remove('visible');
+
+  // Quick chips only for current/past days
+  chips.innerHTML = isFuture ? '' : QUICK_CHIPS.map(c =>
+    `<button class="notes-chip" onclick="appendChip('${c}')">${c}</button>`
+  ).join('');
+}
+
+function appendChip(text) {
+  const ta = document.getElementById('notes-textarea');
+  ta.value = ta.value ? ta.value + '\n' + text : text;
+  onNotesInput();
+}
+
+function onNotesInput() {
+  clearTimeout(notesTimer);
+  notesTimer = setTimeout(saveNote, 1500);
+}
+
+function saveNote() {
+  const vd = state.viewingDay;
+  const val = document.getElementById('notes-textarea').value;
+  state.notes[vd] = val;
+  saveState();
+  const saved = document.getElementById('notes-saved');
+  saved.classList.add('visible');
+  setTimeout(() => saved.classList.remove('visible'), 2000);
+  renderCalendar(getTodayDay());
+}
+
+function renderTimeline(currentDay) {
+  const el = document.getElementById('phase-timeline');
+
+  // 4 phases as segments across 40 days
+  // Each segment: { label, emoji, start, end, cls }
+  // Heavy metals: 1-20 (50%)
+  // Parasite cleanse: 21-40 (50%), with rest days 31-34 shown as sub-segment
+  // Colon cleanse runs across multiple days — shown as legend only
+  // Toxin binder same window as parasite — shown in legend only
+
+  const TOTAL = 40;
+  const phases = [
+    { label: 'Step 1 · Heavy Metals', emoji: '🧩', start: 1,  end: 20, cls: 'seg-heavy' },
+    { label: 'Step 2–3 · Parasite + Binder', emoji: '🪱', start: 21, end: 30, cls: 'seg-parasite' },
+    { label: 'Rest', emoji: '💤', start: 31, end: 34, cls: 'seg-rest' },
+    { label: 'Step 2–3 · Parasite + Binder', emoji: '🪱', start: 35, end: 40, cls: 'seg-parasite' },
+  ];
+
+  const tickDays = [1, 5, 10, 15, 20, 21, 25, 30, 31, 35, 40];
+
+  let html = '';
+
+  // Tick labels row
+  html += '<div class="day-tick-row">';
+  tickDays.forEach(d => {
+    const pct = ((d - 1) / (TOTAL - 1)) * 100;
+    html += `<span class="day-tick-label" style="left:${pct}%">${d}</span>`;
+  });
+  html += '</div>';
+
+  // Track bar
+  html += '<div class="phase-track">';
+  phases.forEach(p => {
+    const width = ((p.end - p.start + 1) / TOTAL) * 100;
+    const isActive = currentDay >= p.start && currentDay <= p.end;
+    const isPast   = currentDay > p.end;
+    const cls = isActive ? 'active' : (isPast ? 'active' : 'inactive');
+    // Show label only if segment wide enough
+    const showLabel = width > 15;
+    html += `<div class="phase-segment ${p.cls} ${cls}" style="width:${width}%;" title="${p.label} (days ${p.start}–${p.end})">
+      ${showLabel ? `<span style="padding:0 6px;overflow:hidden;text-overflow:ellipsis;">${p.emoji} ${p.label.split('·')[0].trim()}</span>` : p.emoji}
+    </div>`;
+  });
+  html += '</div>';
+
+  // Legend row
+  html += '<div class="phase-row-labels">';
+  const legends = [
+    { color: 'rgba(93,202,165,0.5)', label: 'Step 1 — Heavy Metals (1–20)' },
+    { color: 'rgba(250,199,117,0.5)', label: 'Step 2 — Parasite Cleanse (21–40)' },
+    { color: 'rgba(250,199,117,0.4)', label: 'Step 3 — Toxin Binder (21–40)' },
+    { color: 'rgba(93,202,165,0.6)', label: 'Step 4 — Colon Cleanse (15 nights)' },
+    { color: 'rgba(255,255,255,0.15)', label: 'Rest days (31–34)' },
+  ];
+  legends.forEach(l => {
+    html += `<div class="phase-legend-item">
+      <div class="phase-legend-dot" style="background:${l.color}"></div>
+      <span>${l.label}</span>
+    </div>`;
+  });
+  html += '</div>';
+
+  el.innerHTML = html;
+}
+
+function renderCalendar(todayDay) {
+  const grid = document.getElementById('calendar-grid');
+  grid.innerHTML = '';
+  for (let d = 1; d <= 40; d++) {
+    const proto = getDayProtocol(d);
+    const isDone = !!state.completedDays[d];
+    const hasNote = !!(state.notes[d] && state.notes[d].trim());
+    const isToday = d === todayDay;
+    const isFuture = d > todayDay;
+    const pureRest = proto.isRest && proto.tasks.length === 0;
+
+    let cls = 'cal-day';
+    if (isDone) cls += ' done';
+    else if (pureRest) cls += ' rest';
+    else if (isToday) cls += ' today';
+    else if (isFuture) cls += ' future';
+    if (hasNote) cls += ' has-note';
+
+    const el = document.createElement('div');
+    el.className = cls;
+    el.textContent = d;
+    el.title = `Day ${d}${hasNote ? ' 📝' : ''}`;
+    el.onclick = () => { state.viewingDay = d; render(); };
+    grid.appendChild(el);
+  }
+}
+
+function toggleDayComplete() {
+  const vd = state.viewingDay;
+  if (vd > getTodayDay()) return;
+  state.completedDays[vd] = !state.completedDays[vd];
+  saveState(); render();
+}
+
+function navigate(dir) {
+  state.viewingDay = Math.min(Math.max(state.viewingDay + dir, 1), 40);
+  render();
+}
+
+function goToday() { state.viewingDay = getTodayDay(); render(); }
+
+function confirmReset() {
+  if (confirm('Reset all progress and notes? This cannot be undone.')) {
+    localStorage.removeItem('detox40_v2');
+    localStorage.removeItem('detox40_state');
+    location.reload();
+  }
+}
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
+
+window.addEventListener('load', () => {
+  if (loadState()) { state.viewingDay = getTodayDay(); showApp(); }
+  else { document.getElementById('start-date').valueAsDate = new Date(); }
+});
+</script>
+</body>
+</html>
